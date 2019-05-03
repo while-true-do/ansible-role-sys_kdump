@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+{{ wtd_sys_kdump_conf.method }} {{ wtd_sys_kdump_conf.target }}
+{% if sshkey %}sshkey {{ wtd_sys_kdump_conf.sshkey }} {% endif %}
+core_collector {{ wtd_sys_kdump_conf.collector }}
+{% if wtd_sys_kdump_conf.post %}kdump_post {{ wtd_sys_kdump_conf.post }}{% endif %}
+{% if wtd_sys_kdump_conf.pre %}kdump_pre {{ wtd_sys_kdump_conf.pre }}{% endif %}
+{% if wtd_sys_kdump_conf.extra_bins %}extra_bins {{ wtd_sys_kdump_conf.extra_bins }}{% endif %}
+{% if wtd_sys_kdump_conf.extra_modules %}extra_modules {{ wtd_sys_kdump_conf.extra_modules }}{% endif %}
+default {{ wtd_sys_kdump_conf.default }}
+{% if wtd_sys_kdump_conf.force_rebuild %}force_rebuild {{ wtd_sys_kdump_conf.force_rebuild }}{% endif %}
+{% if wtd_sys_kdump_conf.force_no_rebuild %}force_no_rebuild {{ wtd_sys_kdump_conf.force_no_rebuild }}{% endif %}
+{% if wtd_sys_kdump_conf.override_resettable %}override_resettable {{ wtd_sys_kdump_conf.override_resettable }}{% endif %}
+{% if wtd_sys_kdump_conf.dracut_args %}dracut_args {{ wtd_sys_kdump_conf.dracut_args }}{% endif %}
+{% if wtd_sys_kdump_conf.fence_kdump_args %}fence_kdump_args {{ wtd_sys_kdump_conf.fence_kdump_args }}{% endif %}
+{% if wtd_sys_kdump_conf.fence_kdump_nodes %}fence_kdump_nodes {{ wtd_sys_kdump_conf.fence_kdump_nodes }}{% endif %}

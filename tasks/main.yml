@@ -1,0 +1,47 @@
+---
+# tasks file for while_true_do.sys_kdump
+
+- debug:
+    msg: "Cannot install kdump, please configure grub for proper crashkernel."
+  when: wtd_sys_kdump_crashkernel_size|int == 0
+
+- name: Manage kdump Packages
+  package:
+    name: "{{ wtd_sys_kdump_package }}"
+    state: "{{ wtd_sys_kdump_package_state }}"
+  become: true
+  tags:
+    - kdump
+    - package
+    - system
+
+- name: Manage kdump Service
+  service:
+    name: "{{ wtd_sys_kdump_service }}"
+    state: "{{ wtd_sys_kdump_service_state }}"
+    enabled: "{{ wtd_sys_kdump_service_enabled }}"
+  become: true
+  when:
+    - wtd_sys_kdump_package_state != "absent"
+    - wtd_sys_kdump_crashkernel_size|int > 0
+  tags:
+    - kdump
+    - service
+    - configuration
+
+- name: Configure kdump.conf
+  template:
+    src: kdump.conf.j2
+    dest: /etc/kdump.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  notify: Reboot System
+  when:
+    - wtd_sys_kdump_package_state != "absent"
+    - wtd_sys_kdump_crashkernel_size|int > 0
+  tags:
+    - kdump
+    - configuration
+    - system

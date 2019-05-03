@@ -1,0 +1,61 @@
+---
+# defaults file for while_true_do.sys_kdump
+
+wtd_sys_kdump_package:
+  - kexec-tools
+# State can be present|latest|absent
+wtd_sys_kdump_package_state: "present"
+
+
+wtd_sys_kdump_service: "kdump"
+# State can be started|stopped
+wtd_sys_kdump_service_state: "started"
+wtd_sys_kdump_service_enabled: true
+
+# Lookup crashkernel size
+wtd_sys_kdump_crashkernel_size: "{{ lookup('file', '/sys/kernel/kexec_crash_size') }}"
+
+# Variables for /etc/kdump.conf
+# Please read templates/kdump.conf.j2
+wtd_sys_kdump_conf:
+  # Define the method to dump the vmcore
+  # (raw|nfs|ssh|<fs type>|path)
+  method: "path"
+  # address or path for method
+  target: "/var/crash"
+  # ssh key, in case you want to use method: ssh^
+  # sshkey: "/root/.ssh/kdump_id_rsa"
+  # parameters for collector
+  # collector: "makedumpfile -F -l --message-level 1 -d 31"
+  collector: "makedumpfile -l --message-level 1 -d 31"
+  # binary|script to run after vmcore dump
+  # post: "/var/crash/scripts/kdump-post.sh"
+  # binary|script to run before vmcore dump
+  # pre: "/var/crash/scripts/kdump-pre.sh"
+  # binary|script to be included in the kdump initrd
+  # extra_bins: "/usr/bin/lftp"
+  # extra kernel modules included in kdump initrd
+  # extra_modules: "gfs2"
+  # action to perform, in case kdump fails
+  # (reboot|halt|poweroff|shell)
+  default: "reboot"
+  # specify, if initrd must be rebuild
+  # (0|1)
+  # force_rebuild: "1"
+  # specify, if initrd must never be rebuild
+  # (0|1)
+  # force_no_rebuild: "1"
+  # force unresettable blockdevice as target
+  # (0|1)
+  # override_resettable: "1"
+  # extra dracut options to be inclued in initrd
+  # dracut_args: '--omit-drivers "cfg80211 snd" --add-drivers "ext2 ext3"'
+  # arguments for fence_kdump_send
+  # fence_kdump_args: "-p 7410 -f auto -c 0 -i 10"
+  # list all cluster nodes, except localhost
+  # fence_kdump_nodes: "node1 node2"
+
+# Applying new configuration to kdump needs a reboot
+wtd_sys_kdump_reboot_enabled: true
+wtd_sys_kdump_reboot_msg: "System is going down to apply kdump configuration."
+wtd_sys_kdump_reboot_timeout: "3600"
