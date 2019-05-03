@@ -6,7 +6,6 @@ wtd_sys_kdump_package:
 # State can be present|latest|absent
 wtd_sys_kdump_package_state: "present"
 
-
 wtd_sys_kdump_service: "kdump"
 # State can be started|stopped
 wtd_sys_kdump_service_state: "started"

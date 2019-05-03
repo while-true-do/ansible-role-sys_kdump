@@ -6,7 +6,9 @@
     msg: "{{ wtd_sys_kdump_reboot_msg }}"
     reboot_timeout: "{{ wtd_sys_kdump_reboot_timeout }}"
   become: yes
-  when: ansible_virtualization_type != "docker"
+  when:
+    - ansible_virtualization_type != "docker"
+    - wtd_sys_kdump_reboot_enabled
   tags:
     - update
     - reboot
