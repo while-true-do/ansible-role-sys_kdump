@@ -1,9 +1,15 @@
 ---
 # tasks file for while_true_do.sys_kdump
 
+- name: Gather crashkernel Size
+  command: cat /sys/kernel/kexec_crash_size
+  changed_when: false
+  register: wtd_sys_kdump_crashkernel_size
+  become: true
+
 - debug:
     msg: "Cannot install kdump, please configure grub for proper crashkernel."
-  when: wtd_sys_kdump_crashkernel_size|int == 0
+  when: wtd_sys_kdump_crashkernel_size.stdout|int == 0
 
 - name: Manage kdump Packages
   package:
@@ -23,7 +29,7 @@
   become: true
   when:
     - wtd_sys_kdump_package_state != "absent"
-    - wtd_sys_kdump_crashkernel_size|int > 0
+    - wtd_sys_kdump_crashkernel_size.stdout|int > 0
   tags:
     - kdump
     - service
@@ -40,7 +46,7 @@
   notify: Reboot System
   when:
     - wtd_sys_kdump_package_state != "absent"
-    - wtd_sys_kdump_crashkernel_size|int > 0
+    - wtd_sys_kdump_crashkernel_size.stdout|int > 0
   tags:
     - kdump
     - configuration

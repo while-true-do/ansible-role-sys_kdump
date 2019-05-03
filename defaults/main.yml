@@ -12,9 +12,6 @@ wtd_sys_kdump_service: "kdump"
 wtd_sys_kdump_service_state: "started"
 wtd_sys_kdump_service_enabled: true
 
-# Lookup crashkernel size
-wtd_sys_kdump_crashkernel_size: "{{ lookup('file', '/sys/kernel/kexec_crash_size') }}"
-
 # Variables for /etc/kdump.conf
 # Please read templates/kdump.conf.j2
 wtd_sys_kdump_conf:
