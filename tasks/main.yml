@@ -6,16 +6,24 @@
   changed_when: false
   register: wtd_sys_kdump_crashkernel_size
   become: true
+  tags:
+    - kdump
+    - system
 
 - debug:
-    msg: "Cannot install kdump, please configure grub for proper crashkernel."
+    msg: "Cannot install kdump, please configure grub with crashkernel option."
   when: wtd_sys_kdump_crashkernel_size.stdout|int == 0
+  tags:
+    - kdump
+    - system
 
 - name: Manage kdump Packages
   package:
     name: "{{ wtd_sys_kdump_package }}"
     state: "{{ wtd_sys_kdump_package_state }}"
   become: true
+  when:
+    - wtd_sys_kdump_crashkernel_size.stdout|int > 0
   tags:
     - kdump
     - package
