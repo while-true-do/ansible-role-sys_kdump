@@ -150,9 +150,11 @@ Use an nfs address as target.
 
 ## Known Issues
 
-1.  Testing RedHat is currently only possible with a valid subscription.
-    For now, RedHat Testing is faked via CentOS.
-2.  Grub is not configured by this role.
+1.  RedHat Testing is currently not possible in public, due to limitations
+    in subscriptions.
+2.  Some services and features cannot be tested properly, due to limitations
+    in docker.
+3.  Grub is not configured by this role.
 
 ## Testing
 
