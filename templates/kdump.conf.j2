@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {{ ansible_managed | comment }}
 
 {{ wtd_sys_kdump_conf.method }} {{ wtd_sys_kdump_conf.target }}
 {% if wtd_sys_kdump_conf.sshkey is defined %}sshkey {{ wtd_sys_kdump_conf.sshkey }} {% endif %}
