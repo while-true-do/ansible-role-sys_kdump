@@ -1,16 +1,19 @@
 ---
 # defaults file for while_true_do.sys_kdump
 
+## Package Management
 wtd_sys_kdump_package:
   - kexec-tools
 # State can be present|latest|absent
 wtd_sys_kdump_package_state: "present"
 
+## Service Management
 wtd_sys_kdump_service: "kdump"
 # State can be started|stopped
 wtd_sys_kdump_service_state: "started"
 wtd_sys_kdump_service_enabled: true
 
+## Configuration Management
 # Variables for /etc/kdump.conf
 # Please read templates/kdump.conf.j2
 wtd_sys_kdump_conf:
@@ -51,7 +54,7 @@ wtd_sys_kdump_conf:
   # list all cluster nodes, except localhost
   # fence_kdump_nodes: "node1 node2"
 
-# Applying new configuration to kdump needs a reboot
+## Host Management
 wtd_sys_kdump_reboot_enabled: true
 wtd_sys_kdump_reboot_msg: "System is going down to apply kdump configuration."
 wtd_sys_kdump_reboot_timeout: "3600"

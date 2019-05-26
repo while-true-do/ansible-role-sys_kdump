@@ -59,20 +59,19 @@ git clone https://github.com/while-true-do/ansible-role-sys_kdump.git while_true
 ---
 # defaults file for while_true_do.sys_kdump
 
+## Package Management
 wtd_sys_kdump_package:
   - kexec-tools
 # State can be present|latest|absent
 wtd_sys_kdump_package_state: "present"
 
-
+## Service Management
 wtd_sys_kdump_service: "kdump"
 # State can be started|stopped
 wtd_sys_kdump_service_state: "started"
 wtd_sys_kdump_service_enabled: true
 
-# Lookup crashkernel size
-wtd_sys_kdump_crashkernel_size: "{{ lookup('file', '/sys/kernel/kexec_crash_size') }}"
-
+## Configuration Management
 # Variables for /etc/kdump.conf
 # Please read templates/kdump.conf.j2
 wtd_sys_kdump_conf:
@@ -113,7 +112,7 @@ wtd_sys_kdump_conf:
   # list all cluster nodes, except localhost
   # fence_kdump_nodes: "node1 node2"
 
-# Applying new configuration to kdump needs a reboot
+## Host Management
 wtd_sys_kdump_reboot_enabled: true
 wtd_sys_kdump_reboot_msg: "System is going down to apply kdump configuration."
 wtd_sys_kdump_reboot_timeout: "3600"
@@ -143,9 +142,11 @@ Use an nfs address as target.
 - hosts: all
   roles:
     - role: while_true_do.sys_kdump
-      wtd_sys_kdump_conf
+      wtd_sys_kdump_conf:
         method: "nfs"
         target: "192.168.10.1:/path/to/dir"
+        collector: "makedumpfile -l --message-level 1 -d 31"
+        default: "reboot"
 ```
 
 ## Known Issues

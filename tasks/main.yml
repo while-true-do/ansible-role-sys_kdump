@@ -12,7 +12,8 @@
 
 - debug:
     msg: "Cannot install kdump, please configure grub with crashkernel option."
-  when: wtd_sys_kdump_crashkernel_size.stdout|int == 0
+  when:
+    - wtd_sys_kdump_crashkernel_size.stdout|int == 0
   tags:
     - kdump
     - system
@@ -29,20 +30,6 @@
     - package
     - system
 
-- name: Manage kdump Service
-  service:
-    name: "{{ wtd_sys_kdump_service }}"
-    state: "{{ wtd_sys_kdump_service_state }}"
-    enabled: "{{ wtd_sys_kdump_service_enabled }}"
-  become: true
-  when:
-    - wtd_sys_kdump_package_state != "absent"
-    - wtd_sys_kdump_crashkernel_size.stdout|int > 0
-  tags:
-    - kdump
-    - service
-    - configuration
-
 - name: Configure kdump.conf
   template:
     src: kdump.conf.j2
@@ -53,9 +40,23 @@
   become: true
   notify: Reboot System
   when:
-    - wtd_sys_kdump_package_state != "absent"
     - wtd_sys_kdump_crashkernel_size.stdout|int > 0
+    - wtd_sys_kdump_package_state != "absent"
   tags:
     - kdump
     - configuration
     - system
+
+- name: Manage kdump Service
+  service:
+    name: "{{ wtd_sys_kdump_service }}"
+    state: "{{ wtd_sys_kdump_service_state }}"
+    enabled: "{{ wtd_sys_kdump_service_enabled }}"
+  become: true
+  when:
+    - wtd_sys_kdump_crashkernel_size.stdout|int > 0
+    - wtd_sys_kdump_package_state != "absent"
+  tags:
+    - kdump
+    - service
+    - configuration
