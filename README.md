@@ -113,7 +113,7 @@ wtd_sys_kdump_conf:
   # fence_kdump_nodes: "node1 node2"
 
 ## Host Management
-wtd_sys_kdump_reboot_enabled: true
+wtd_sys_kdump_reboot_enabled: false
 wtd_sys_kdump_reboot_msg: "System is going down to apply kdump configuration."
 wtd_sys_kdump_reboot_timeout: "3600"
 ```
