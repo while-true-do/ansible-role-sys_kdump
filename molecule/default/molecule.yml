@@ -34,7 +34,6 @@ platforms:
     tmpfs:
       - /run
       - /tmp
-    # privileged: true
     groups:
       - ${pygroup:-python}
     environment:
